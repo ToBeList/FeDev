@@ -51,7 +51,7 @@ export default function Home() {
             {/* 메인페이지 이동 */}
           </StyledLoginForm>
 
-          <StyledLink href="/Register">
+          <StyledLink href="/SignUp">
             <StyledP>회원가입</StyledP>
           </StyledLink>
         </StyledForm>
