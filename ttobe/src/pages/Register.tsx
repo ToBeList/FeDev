@@ -4,50 +4,53 @@ import { useRouter } from "next/router";
 import { ChangeEvent, useState } from "react";
 import axios from "axios";
 
-
-export default function SignUp() {
+export default function Register() {
   const router = useRouter();
+  const onBack = () => {
+    router.push({
+      pathname: "/",
+    });
+  };
 
-  const [userId, setUserId] = useState<string>("");
-  const [userPw, setUserPw] = useState<string>("");
-  const [repeatPw, setRepeatPw] = useState<string>("");
   const [nickname, setNickname] = useState<string>("");
-
-  const onChangeId = (e: ChangeEvent<HTMLInputElement>) => {
-    setUserId(e.target.value);
-  };
-
-  const onChangePw = (e: ChangeEvent<HTMLInputElement>) => {
-    setUserPw(e.target.value);
-  };
-
-  const onChangeRePeatPw = (e: ChangeEvent<HTMLInputElement>) => {
-    setRepeatPw(e.target.value);
-  };
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [checkedPassword, setCheckedPassword] = useState<string>("");
 
   const onChangeNickName = (e: ChangeEvent<HTMLInputElement>) => {
     setNickname(e.target.value);
   };
 
+  const onChangeEmail = (e: ChangeEvent<HTMLInputElement>) => {
+    setEmail(e.target.value);
+  };
+
+  const onChangePw = (e: ChangeEvent<HTMLInputElement>) => {
+    setPassword(e.target.value);
+  };
+
+  const onChangeCheckedPW = (e: ChangeEvent<HTMLInputElement>) => {
+    setCheckedPassword(e.target.value);
+  };
+
   const errorAlert = () => {
-    if (userPw != repeatPw) {
+    if (password != checkedPassword) {
       return alert("비밀번호가 일치하지 않습니다.");
-    } else {
     }
   };
 
   const onSubmit = (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
     axios
-      .post("/join", {
-        username: userId,
-        password: userPw,
-        repeatedPassword: repeatPw,
+      .post("/signup", {
         nickname: nickname,
+        email: email,
+        password: password,
+        checkedPassword: checkedPassword,
       })
       .then((res) => {
         console.log(res.data);
-        router.push("/signIn");
+        router.push("/");
       })
       .catch((error) => {
         console.log(error);
@@ -64,25 +67,25 @@ export default function SignUp() {
       </StyledTitle>
       <StyledRegisterForm onSubmit={onSubmit}>
         <StyledDiv>
-          <StyledLabel htmlFor="email">이메일</StyledLabel>
+          <StyledLabel htmlFor="nickname">닉네임</StyledLabel>
           <StyledInput
-            type="email"
-            id="email"
-            onChange={onChangeId}
-            placeholder="이메일"
-            maxLength={40}
+            type="text"
+            id="nickname"
+            onChange={onChangeNickName}
+            placeholder="2~8자 이내"
+            minLength={2}
+            maxLength={8}
             required
           />
         </StyledDiv>
         <StyledDiv>
-          <StyledLabel htmlFor="username">유저명</StyledLabel>
+          <StyledLabel htmlFor="email">이메일</StyledLabel>
           <StyledInput
-            type="text"
-            id="username"
-            onChange={onChangeNickName}
-            placeholder="2~8자"
-            minLength={2}
-            maxLength={8}
+            type="email"
+            id="email"
+            onChange={onChangeEmail}
+            placeholder="example@domain.id"
+            maxLength={40}
             required
           />
         </StyledDiv>
@@ -102,7 +105,7 @@ export default function SignUp() {
           <StyledInput
             type="password"
             id="pwc"
-            onChange={onChangeRePeatPw}
+            onChange={onChangeCheckedPW}
             placeholder="최소 8자 입력"
             minLength={8}
             required
@@ -112,7 +115,7 @@ export default function SignUp() {
         <StyledBtnBox>
           <StyledBtn type="submit">회원가입</StyledBtn>
           {/* 백에 작성 내용 전달 */}
-          <StyledBtn>돌아가기</StyledBtn>
+          <StyledBtn onClick={onBack}>돌아가기</StyledBtn>
         </StyledBtnBox>
       </StyledRegisterForm>
     </>

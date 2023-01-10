@@ -26,5 +26,5 @@ const StyledImgWrapper = styled.div`
 
 const StyledHr = styled.hr`
   width: 50%;
-  border-color: #82aae3;
+  border-color: #BFEAF5;
 `;
