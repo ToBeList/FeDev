@@ -8,7 +8,7 @@ import axios from "axios";
 import useToken from "../hooks/useToken";
 
 interface IGoal {
-  id: number;
+  // id : number;
   content: string;
 }
 
@@ -37,71 +37,74 @@ export default function Goal() {
     ]);
     setCurrentGoal("");
 
-    axios.post("/main/habit",{
-      goal:goals,
-    },
-    {
-    headers:{
-      Authorization: fullToken,
-    }
-  })
-  .then((res) => {
-    console.log(res.data);
-    localStorage.setItem("accessToken", res.data.accessToken);
-    router.push("/MainPage");
-  })
-  .catch((err) => {
-    console.log(err);
-    alert("문제가 발생했습니다.");
-  });
+    axios
+      .post("/main/habit", {
+        goal: goals,
+      },
+      {
+        headers: {
+          Authorization: fullToken,
+        }
+      })
+      .then((res) => {
+        console.log(res.data);
+        localStorage.setItem("accessToken", res.data.accessToken);
+        router.push("/MainPage");
+      })
+      .catch((err) => {
+        console.log(err);
+        alert("문제가 발생했습니다.");
+      });
+
+  };
 
   const router = useRouter();
 
   const Main = () => {
     router.push({
-      pathname: "/",
+      pathname: "/MainPage",
     });
   };
 
   return (
     <>
-      {goals.map((goal) => (
-        <StyledDiv key={goal.id}>
-          <Arrow />
-          <StyledSpan>{goal.content}</StyledSpan>
-          <StyledDeleteBtn onClick={Main}>
-            <Delete />
-          </StyledDeleteBtn>
-        </StyledDiv>
-      ))}
-      <StyledForm onSubmit={onGoalSubmit}>
-        <label htmlFor={INPUT_ID}>
-          <Image src="/img/add.png" alt="add" width={35} height={35} />
-        </label>
-        <StyledInput
-          id={INPUT_ID}
-          onChange={onCurrentGoalChange}
-          placeholder="목표 추가..."
-          type="text"
-          value={currentGoal}
-        />
-        <StyledBtn type="submit">
-          <Image src="/img/write.png" alt="write" width={10} height={10} />
-          {""} 작성
-        </StyledBtn>
-      </StyledForm>
-      <StyledBtnBox>
-        <StyledSaveBtn onClick={Main}>
-          <Image src="/img/save.png" alt="save" width={10} height={10} /> 저장
-        </StyledSaveBtn>
-        <StyledCancelBtn onClick={Main}>
-          <Image src="/img/cancel.png" alt="cancel" width={12} height={12} />
-          {""} 취소
-        </StyledCancelBtn>
-      </StyledBtnBox>
+      <StyledContainer>
+        {goals.map((goal) => (
+          <StyledDiv key={goal.content}>
+            <Arrow />
+            <StyledSpan>{goal.content}</StyledSpan>
+            <StyledDeleteBtn onClick={Main}>
+              <Delete />
+            </StyledDeleteBtn>
+          </StyledDiv>
+        ))}
+        <StyledForm onSubmit={onGoalSubmit}>
+          <label htmlFor={INPUT_ID}>
+            <Image src="/img/add.png" alt="add" width={35} height={35} />
+          </label>
+          <StyledInput
+            id={INPUT_ID}
+            onChange={onCurrentGoalChange}
+            placeholder="목표 추가..."
+            type="text"
+            value={currentGoal}
+          />
+          <StyledBtn type="submit">
+            <Image src="/img/write.png" alt="write" width={10} height={10} />
+            {""} 작성
+          </StyledBtn>
+        </StyledForm>
+        <StyledBackBtn>메인페이지로 이동</StyledBackBtn>
+      </StyledContainer>
     </>
   );
 }
+
+const StyledContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+`;
 
 const StyledDiv = styled.div`
   display: flex;
@@ -117,9 +120,9 @@ const StyledSpan = styled.span`
 `;
 
 const StyledDeleteBtn = styled.button`
-    cursor: pointer;
-    border: none;
-    background-color: white;
+  cursor: pointer;
+  border: none;
+  background-color: white;
 `;
 
 const StyledForm = styled.form`
@@ -151,17 +154,13 @@ const StyledBtn = styled.button`
   }
 `;
 
-const StyledBtnBox = styled.div`
-  display: flex;
-  justify-content: center;
-`;
-
-const StyledSaveBtn = styled.button`
+const StyledBackBtn = styled.button`
+  margin: auto;
   cursor: pointer;
-  margin-right: 1rem;
-  padding: 0.5rem;
+  padding: 1rem;
   border: none;
   border-radius: 10px;
+  background-color: #eafdfc;
 
   &:hover {
     background-color: #eafdfc;
@@ -169,17 +168,3 @@ const StyledSaveBtn = styled.button`
     transform: translateY(-2px);
   }
 `;
-
-const StyledCancelBtn = styled.button`
-  cursor: pointer;
-  padding: 0.5rem;
-  border: none;
-  border-radius: 10px;
-
-  &:hover {
-    background-color: #eafdfc;
-    transition: all 0.5s;
-    transform: translateY(-2px);
-  }
-`;
-}

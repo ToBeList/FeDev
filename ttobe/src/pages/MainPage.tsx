@@ -41,6 +41,15 @@ export default function MainPage() {
     })
   }
 
+  // 목표 추가 페이지 이동
+  const router = useRouter(); 
+
+  const AddGoal = () => {
+    router.push({
+      pathname: "AddGoal",
+    })
+  }
+
   // 추후에 백 데이터를 받아올 부분 (리스트 선택 및 해제)
   const [isChecked, setIsChecked] = useState<boolean>(false);
   const onChecked = () => {
