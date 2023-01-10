@@ -17,6 +17,8 @@ const INPUT_ID = "CheckBox";
 
 export default function MainPage() {
   const [date, setDate] = useState(new Date());
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
   const onClickDayTile = (e: React.MouseEvent<HTMLElement>) => {
     // e.preventDefault();
     alert("you clicked me");
@@ -83,7 +85,9 @@ export default function MainPage() {
                   width={100}
                   height={100}
                 ></Image>
-                <StyledModalTitle>?월 ?일 목표 리스트</StyledModalTitle>
+                <StyledModalTitle>
+                  {month}월 {day}일 목표 리스트
+                </StyledModalTitle>
                 <StyledPlusBtn>+</StyledPlusBtn>
                 <StyledTextBallon>목표 추가 페이지로 이동하기</StyledTextBallon>
                 {/* 이 부분은 CheckBox 백 데이터 받아와야되는 부분 */}
