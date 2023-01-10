@@ -1,3 +1,18 @@
+import { useEffect, useState } from "react";
+import Login from "./Login";
+
+type account = string | null;
+
 export default function Home() {
-  return <></>;
+  const [aToken, setAToken] = useState<account>("");
+  useEffect(()=> {
+    setAToken(localStorage.getItem("accessToken"));
+  }, [])
+
+  console.log(aToken + "-Token")
+  return (
+    <>
+      <Login />
+    </>
+  );
 }
