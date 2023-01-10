@@ -33,15 +33,6 @@ export default function MainPage() {
   }, [isOpenModal]);
 
   // 목표 추가 페이지 이동
-  const router = useRouter();
-
-  const AddGoal = () => {
-    router.push({
-      pathname: "AddGoal",
-    })
-  }
-
-  // 목표 추가 페이지 이동
   const router = useRouter(); 
 
   const AddGoal = () => {
