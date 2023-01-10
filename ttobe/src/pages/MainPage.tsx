@@ -11,6 +11,7 @@ import styled from "styled-components";
 import GlobalStyle from "./GlobalStyle";
 import { TbArrowNarrowLeft, TbArrowNarrowRight } from "react-icons/tb";
 import { CheckBox, LabelCheckedBox } from "../components/CheckBox.stroies";
+import { useRouter } from "next/router";
 
 // Input 태그와 Label 태그를 연결하기 위한 for 값 상수화
 const INPUT_ID = "CheckBox";
@@ -30,6 +31,15 @@ export default function MainPage() {
   const onClickToggleModal = useCallback(() => {
     setIsOpenModal(!isOpenModal);
   }, [isOpenModal]);
+
+  // 목표 추가 페이지 이동
+  const router = useRouter();
+
+  const AddGoal = () => {
+    router.push({
+      pathname: "AddGoal",
+    })
+  }
 
   // 추후에 백 데이터를 받아올 부분 (리스트 선택 및 해제)
   const [isChecked, setIsChecked] = useState<boolean>(false);
@@ -88,7 +98,7 @@ export default function MainPage() {
                 <StyledModalTitle>
                   {month}월 {day}일 목표 리스트
                 </StyledModalTitle>
-                <StyledPlusBtn>+</StyledPlusBtn>
+                <StyledPlusBtn onClick={AddGoal}>+</StyledPlusBtn>
                 <StyledTextBallon>목표 추가 페이지로 이동하기</StyledTextBallon>
                 {/* 이 부분은 CheckBox 백 데이터 받아와야되는 부분 */}
                 <div>

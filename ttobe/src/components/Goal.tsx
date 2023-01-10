@@ -4,6 +4,8 @@ import Arrow from "./Arrow";
 import Delete from "./Delete";
 import styled from "styled-components";
 import Image from "next/image";
+import axios from "axios";
+import useToken from "../hooks/useToken";
 
 interface IGoal {
   id: number;
@@ -13,6 +15,7 @@ interface IGoal {
 const INPUT_ID = "goalinput";
 
 export default function Goal() {
+  const {fullToken} = useToken();
   const [goals, setGoals] = useState<IGoal[]>([]);
   const [currentGoal, setCurrentGoal] = useState<string>("");
 
@@ -33,7 +36,24 @@ export default function Goal() {
       { id: prev.length + 1, content: currentGoal },
     ]);
     setCurrentGoal("");
-  };
+
+    axios.post("/main/habit",{
+      goal:goals,
+    },
+    {
+    headers:{
+      Authorization: fullToken,
+    }
+  })
+  .then((res) => {
+    console.log(res.data);
+    localStorage.setItem("accessToken", res.data.accessToken);
+    router.push("/MainPage");
+  })
+  .catch((err) => {
+    console.log(err);
+    alert("문제가 발생했습니다.");
+  });
 
   const router = useRouter();
 
@@ -162,3 +182,4 @@ const StyledCancelBtn = styled.button`
     transform: translateY(-2px);
   }
 `;
+}
