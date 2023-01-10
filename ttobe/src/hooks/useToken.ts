@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 
 //localStorage를 사용하려면 | null이 없으면 안됨 json이라서 그런가??
 type account = string | null;
-type grant = string | null;
+type grantType = string | null;
 
 const useToken = () => {
-  const [grant, setGrant] = useState<grant>("");
+  const [grant, setGrant] = useState<grantType>("");
   const [aToken, setAToken] = useState<account>("");
 
   useEffect(() => {

@@ -7,39 +7,30 @@ import Image from "next/image";
 import axios from "axios";
 import useToken from "../hooks/useToken";
 
-interface IGoal {
-  // id : number;
-  content: string;
-}
-
 const INPUT_ID = "goalinput";
 
 export default function Goal() {
-  const {fullToken} = useToken();
-  const [goals, setGoals] = useState<IGoal[]>([]);
-  const [currentGoal, setCurrentGoal] = useState<string>("");
+  const { fullToken } = useToken();
+  const router = useRouter();
+  const [goal, setGoal] = useState<string>("");
+
+  console.log(fullToken);
 
   const onCurrentGoalChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
-    setCurrentGoal(value);
+    setGoal(value);
   };
 
-  const onGoalSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const onGoalSubmit = (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (currentGoal === "") {
+    if (goal === "") {
       alert("목표를 작성해주세요.");
       return;
     }
 
-    setGoals((prev) => [
-      ...prev,
-      { id: prev.length + 1, content: currentGoal },
-    ]);
-    setCurrentGoal("");
-
     axios
       .post("/main/habit", {
-        goal: goals,
+        goal: goal,
       },
       {
         headers: {
@@ -48,17 +39,14 @@ export default function Goal() {
       })
       .then((res) => {
         console.log(res.data);
-        localStorage.setItem("accessToken", res.data.accessToken);
         router.push("/MainPage");
+        alert("작성 완료")
       })
       .catch((err) => {
         console.log(err);
         alert("문제가 발생했습니다.");
       });
-
   };
-
-  const router = useRouter();
 
   const Main = () => {
     router.push({
@@ -69,15 +57,15 @@ export default function Goal() {
   return (
     <>
       <StyledContainer>
-        {goals.map((goal) => (
-          <StyledDiv key={goal.content}>
+       
+          {/*<StyledDiv>
             <Arrow />
-            <StyledSpan>{goal.content}</StyledSpan>
-            <StyledDeleteBtn onClick={Main}>
+            <StyledSpan>{goals}</StyledSpan>
+            <StyledDeleteBtn>
               <Delete />
             </StyledDeleteBtn>
-          </StyledDiv>
-        ))}
+  </StyledDiv>*/}
+     
         <StyledForm onSubmit={onGoalSubmit}>
           <label htmlFor={INPUT_ID}>
             <Image src="/img/add.png" alt="add" width={35} height={35} />
@@ -87,14 +75,14 @@ export default function Goal() {
             onChange={onCurrentGoalChange}
             placeholder="목표 추가..."
             type="text"
-            value={currentGoal}
+            value={goal}
           />
           <StyledBtn type="submit">
             <Image src="/img/write.png" alt="write" width={10} height={10} />
             {""} 작성
           </StyledBtn>
         </StyledForm>
-        <StyledBackBtn>메인페이지로 이동</StyledBackBtn>
+        <StyledBackBtn onClick={Main}>메인페이지로 이동</StyledBackBtn>
       </StyledContainer>
     </>
   );
