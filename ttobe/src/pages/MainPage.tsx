@@ -18,7 +18,7 @@ import useToken from "../hooks/useToken";
 const INPUT_ID = "CheckBox";
 
 export default function MainPage() {
-  const {fullToken} = useToken();
+  const {Tokens} = useToken();
   const [date, setDate] = useState(new Date());
   const month = date.getMonth() + 1;
   const day = date.getDate();

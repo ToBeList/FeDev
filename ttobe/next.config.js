@@ -11,7 +11,7 @@ const nextConfig = {
       fallback: [
         {
           source: "/:path*",
-          destination: `http://tobelist.duckdns.org/:path*`,
+          destination: `http://ttubelist.duckdns.org/:path*`,
         },
       ]
     };

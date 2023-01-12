@@ -108,6 +108,7 @@ const StyledImgWrapper = styled.div`
 `;
 
 const StyledHr = styled.hr`
+  margin: auto;
   width: 50%;
   border-color: #82aae3;
 `;
