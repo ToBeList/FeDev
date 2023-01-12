@@ -13,10 +13,10 @@ const useToken = () => {
     setAToken(localStorage.getItem("accessToken"));
   }, []);
 
-  const Tokens = [grant + " " + aToken];
-  const fullToken = Tokens.join();
+  const Tokens = ['Bearer' + " " + aToken];
+  // const fullToken = Tokens.join();
 
-  return { fullToken };
+  return { Tokens };
 };
 
 export default useToken;

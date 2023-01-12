@@ -29,7 +29,7 @@ export default function Login() {
       .then((res) => {
         console.log(res.data);
         localStorage.setItem("accessToken", res.data.accessToken);
-        router.push("/AddGoal");
+        router.push("/MainPage");
       })
       // Email/Pw 존재 X -> alert("잘못 입력")
       .catch((err) => {

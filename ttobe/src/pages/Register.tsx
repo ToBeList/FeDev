@@ -139,10 +139,6 @@ const StyledRegisterForm = styled.form`
   border: 3px solid #82aae3;
   border-radius: 10px;
   box-shadow: #82aae3 5px 5px, #bfeaf5 15px 15px, #eafdfc 25px 25px;
-  /* box-shadow: #82aae3 0px 0px 0px 2px inset,
-    rgb(255, 255, 255) 10px -10px 0px -3px, #bfeaf5 10px -10px,
-    rgb(255, 255, 255) 20px -20px 0px -3px, #eafdfc 20px -20px,
-    rgb(255, 255, 255) 30px -30px 0px -3px; */
   display: flex;
   justify-content: center;
   align-items: center;
