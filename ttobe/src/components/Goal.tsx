@@ -15,12 +15,9 @@ interface IGoals {
   id: string;
   goal: string;
   checked: boolean;
+  date: string;
 }
 
-// IGoals를  goalList라는 IGoals 배열을 타입으로 갖는 IAims 인터페이스 선언
-interface IAims {
-  goalList: IGoals[];
-}
 
 const INPUT_ID = "goalinput";
 
@@ -38,7 +35,8 @@ export default function Goal() {
 
   let ready = router.isReady;
 
-  const [post, setPost] = useState<IAims>([]);
+  // const [post, setPost] = useState<IAims | never>();
+  const [post, setPost] = useState<IGoals[]>([]);
   // console.log(post);
 
   const onCurrentGoalChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -80,11 +78,13 @@ export default function Goal() {
     setCurrentGoal("");
   };
 
+  //! async- await인데 then을 쓰고 있음
+  //! instance를 써서 proxy환경이냐 개발환경이냐 . baseUrl: 
   // get 방식 하려는 부분
   useEffect(() => {
-    console.log(ready);
-    const getPost = () => {
-      axios
+    // console.log(ready);
+    const getPost = async () => {
+      await axios
         .get(`/main/habit`, {
           headers: {
             Authorization: Tokens,
@@ -105,8 +105,11 @@ export default function Goal() {
           // console.log(e);
         });
     };
-    ready ? getPost() : null;
+
+    getPost();
   }, []);
+
+  // 별칭, let ready = router.isReady; < 기피해야 되는 문법 . 
 
   const Main = () => {
     router.push({
@@ -133,10 +136,21 @@ export default function Goal() {
             {""} 작성
           </StyledBtn>
         </StyledForm>
-        <div>hi
-          {post?.goalList && post?.goalList.map((m) => {
-            return <p key={m.id}>목표 리스트: {m.goal}</p>;
-          })}
+        <div>
+          <p>
+            {post.map((item) => {
+              return (
+                <p key={item.id}>
+                  {item.id}
+                  {item.goal}
+                </p>
+              );
+            })}
+            {/* {post?.goalList &&
+              post?.goalList.map((m) => {
+                return <p key={m.id}>목표 리스트: {m.goal}</p>;
+              })} */}
+          </p>
         </div>
         <StyledBackBtn onClick={Main}>메인페이지로 이동</StyledBackBtn>
       </StyledContainer>
