@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Arrow from "./Arrow";
 import Delete from "./Delete";
@@ -6,18 +6,40 @@ import styled from "styled-components";
 import Image from "next/image";
 import axios from "axios";
 import useToken from "../hooks/useToken";
+import moment from "moment";
+import "moment/locale/ko";
+// import useGetGoals from "../hooks/useGetGoals";
 
-interface IGoal {
-  // id : number;
-  content: string;
+// IGoals라는 인터페이스 선언
+interface IGoals {
+  id: string;
+  goal: string;
+  checked: boolean;
+}
+
+// IGoals를  goalList라는 IGoals 배열을 타입으로 갖는 IAims 인터페이스 선언
+interface IAims {
+  goalList: IGoals[];
 }
 
 const INPUT_ID = "goalinput";
 
+// Goal 컴포넌트 선언, 함수형 컴포넌트로, 인자값을 IAims를 받아
+// 그 안의 속성인 goalList를 비구조화 할당으로 꺼낸다.
+// goalList는 배열이므로 map을 이용해 반복하여 goalItem 컴포넌트 렌더링
 export default function Goal() {
-  const {fullToken} = useToken();
-  const [goals, setGoals] = useState<IGoal[]>([]);
+  const { Tokens } = useToken();
+  const [goals, setGoals] = useState<string>("");
   const [currentGoal, setCurrentGoal] = useState<string>("");
+  const [currentDate, setCurrentDate] = useState(new Date());
+  const [currentChecked, setCurrentChecked] = useState<boolean>(false);
+  const router = useRouter();
+  // 코드 추상화
+
+  let ready = router.isReady;
+
+  const [post, setPost] = useState<IAims>([]);
+  // console.log(post);
 
   const onCurrentGoalChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
@@ -30,35 +52,61 @@ export default function Goal() {
       alert("목표를 작성해주세요.");
       return;
     }
-
-    setGoals((prev) => [
-      ...prev,
-      { id: prev.length + 1, content: currentGoal },
-    ]);
-    setCurrentGoal("");
-
     axios
-      .post("/main/habit", {
-        goal: goals,
-      },
-      {
-        headers: {
-          Authorization: fullToken,
+      .post(
+        "/main/habit",
+        {
+          goal: currentGoal,
+          date: moment(currentDate).format("YYYY-MM-DD"),
+          checked: currentChecked,
+        },
+        {
+          headers: {
+            Authorization: Tokens,
+            "Content-Type": "application/json",
+          },
         }
-      })
+      )
       .then((res) => {
         console.log(res.data);
-        localStorage.setItem("accessToken", res.data.accessToken);
-        router.push("/MainPage");
+        router.push("/AddGoal");
+        alert("작성 완료");
       })
       .catch((err) => {
         console.log(err);
         alert("문제가 발생했습니다.");
       });
 
+    setCurrentGoal("");
   };
 
-  const router = useRouter();
+  // get 방식 하려는 부분
+  useEffect(() => {
+    console.log(ready);
+    const getPost = () => {
+      axios
+        .get(`/main/habit`, {
+          headers: {
+            Authorization: Tokens,
+          },
+        })
+        .then((data) => {
+          console.log(data.data);
+          setPost(data.data);
+          console.log(JSON.stringify(data.data));
+        })
+        .catch((e) => {
+          alert("no");
+          if (Tokens === null) {
+            router.push("/login");
+            alert("로그인 후 이용");
+          }
+          // console.log(Tokens);
+          // console.log(e);
+        });
+    };
+    ready ? getPost() : null;
+  }, []);
 
   const Main = () => {
     router.push({
@@ -69,15 +117,6 @@ export default function Goal() {
   return (
     <>
       <StyledContainer>
-        {goals.map((goal) => (
-          <StyledDiv key={goal.content}>
-            <Arrow />
-            <StyledSpan>{goal.content}</StyledSpan>
-            <StyledDeleteBtn onClick={Main}>
-              <Delete />
-            </StyledDeleteBtn>
-          </StyledDiv>
-        ))}
         <StyledForm onSubmit={onGoalSubmit}>
           <label htmlFor={INPUT_ID}>
             <Image src="/img/add.png" alt="add" width={35} height={35} />
@@ -94,7 +133,12 @@ export default function Goal() {
             {""} 작성
           </StyledBtn>
         </StyledForm>
-        <StyledBackBtn>메인페이지로 이동</StyledBackBtn>
+        <div>hi
+          {post?.goalList && post?.goalList.map((m) => {
+            return <p key={m.id}>목표 리스트: {m.goal}</p>;
+          })}
+        </div>
+        <StyledBackBtn onClick={Main}>메인페이지로 이동</StyledBackBtn>
       </StyledContainer>
     </>
   );
