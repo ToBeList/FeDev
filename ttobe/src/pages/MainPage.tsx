@@ -12,11 +12,13 @@ import GlobalStyle from "./GlobalStyle";
 import { TbArrowNarrowLeft, TbArrowNarrowRight } from "react-icons/tb";
 import { CheckBox, LabelCheckedBox } from "../components/CheckBox.stroies";
 import { useRouter } from "next/router";
+import useToken from "../hooks/useToken";
 
 // Input 태그와 Label 태그를 연결하기 위한 for 값 상수화
 const INPUT_ID = "CheckBox";
 
 export default function MainPage() {
+  const {Tokens} = useToken();
   const [date, setDate] = useState(new Date());
   const month = date.getMonth() + 1;
   const day = date.getDate();

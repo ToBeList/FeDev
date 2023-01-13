@@ -44,8 +44,6 @@ const useGetGoals = () => {
           alert("로그인을 해주십시오");
         }
       });
-  },[]);
-  ready ? getGoals() : null;
 
   // getGoals 처음 렌더링, 값 변동 시 re
   useEffect(() => {
