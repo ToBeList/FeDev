@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { useState } from "react";
 import styled from "styled-components";
 import Goal from "../components/Goal";
 
@@ -10,8 +11,7 @@ export default function AddGoal() {
         <h1>2023년도 목표</h1>
       </StyledImgWrapper>
       <StyledHr />
-
-      <Goal/>
+      <Goal />
     </>
   );
 }
@@ -25,6 +25,7 @@ const StyledImgWrapper = styled.div`
 `;
 
 const StyledHr = styled.hr`
+  margin: auto;
   width: 50%;
-  border-color: #BFEAF5;
+  border-color: #82aae3;
 `;

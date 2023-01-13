@@ -105,7 +105,7 @@ export default function Goal() {
           // console.log(e);
         });
     };
-
+    
     getPost();
   }, []);
 
@@ -203,7 +203,6 @@ const StyledBtn = styled.button`
   cursor: pointer;
   border: none;
   border-radius: 10px;
-
   &:hover,
   &:focus {
     background-color: #eafdfc;
@@ -219,7 +218,6 @@ const StyledBackBtn = styled.button`
   border: none;
   border-radius: 10px;
   background-color: #eafdfc;
-
   &:hover {
     background-color: #eafdfc;
     transition: all 0.5s;
