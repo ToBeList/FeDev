@@ -1,3 +1,4 @@
+/*
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useEffect, useState, useCallback } from "react";
@@ -10,47 +11,40 @@ interface IGoals {
   checked: boolean;
 }
 
-interface IAims{
-    data: IGoals[];
-}
-// interface IAims {
-//   records: IGoals[];
-// }
-
 const useGetGoals = () => {
   const { Tokens } = useToken();
   const router = useRouter();
-  let ready = router.isReady;
-  const [post, setPost] = useState<IGoals[] | never>();
-//   const [post, setPost] = useState<IGoals | never>();
+  const [post, setPost] = useState<IGoals[]>([]);
+  //   const [post, setPost] = useState<IGoals | never>();
 
-  console.log(ready);
-  
-  const getGoals = useCallback(async () => {
-    await axios
+  const getPost = useCallback(() => {
+    axios
       .get(`/main/habit`, {
         headers: {
           Authorization: Tokens,
         },
       })
       .then((data) => {
-        // console.log(res.data);
+        console.log(data.data);
         setPost(data.data);
+        console.log(JSON.stringify(data.data));
       })
       .catch((e) => {
-        alert("No");
+        alert("no");
         if (Tokens === null) {
           router.push("/login");
-          alert("로그인을 해주십시오");
+          alert("로그인 후 이용");
         }
       });
+  }, []);
 
   // getGoals 처음 렌더링, 값 변동 시 re
   useEffect(() => {
-    getGoals();
-  }, [getGoals]);
+    getPost();
+  }, [getPost]);
 
-  return { post, getGoals };
+  return { post, getPost };
 };
 
 export default useGetGoals;
+*/

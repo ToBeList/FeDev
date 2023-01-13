@@ -18,7 +18,6 @@ interface IGoals {
   date: string;
 }
 
-
 const INPUT_ID = "goalinput";
 
 // Goal 컴포넌트 선언, 함수형 컴포넌트로, 인자값을 IAims를 받아
@@ -79,7 +78,7 @@ export default function Goal() {
   };
 
   //! async- await인데 then을 쓰고 있음
-  //! instance를 써서 proxy환경이냐 개발환경이냐 . baseUrl: 
+  //! instance를 써서 proxy환경이냐 개발환경이냐 . baseUrl:
   // get 방식 하려는 부분
   useEffect(() => {
     // console.log(ready);
@@ -105,11 +104,10 @@ export default function Goal() {
           // console.log(e);
         });
     };
-    
     getPost();
   }, []);
 
-  // 별칭, let ready = router.isReady; < 기피해야 되는 문법 . 
+  // 별칭, let ready = router.isReady; < 기피해야 되는 문법 .
 
   const Main = () => {
     router.push({
@@ -137,20 +135,13 @@ export default function Goal() {
           </StyledBtn>
         </StyledForm>
         <div>
-          <p>
-            {post.map((item) => {
-              return (
-                <p key={item.id}>
-                  {item.id}
-                  {item.goal}
-                </p>
-              );
-            })}
-            {/* {post?.goalList &&
-              post?.goalList.map((m) => {
-                return <p key={m.id}>목표 리스트: {m.goal}</p>;
-              })} */}
-          </p>
+          {post.map((item) => {
+            return (
+              <StyledDiv key={item.id}>
+                <StyledListDiv>{item.goal}</StyledListDiv>
+              </StyledDiv>
+            );
+          })}
         </div>
         <StyledBackBtn onClick={Main}>메인페이지로 이동</StyledBackBtn>
       </StyledContainer>
@@ -168,10 +159,13 @@ const StyledDiv = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  border: none;
+  width: 300px;
+  margin: 0 auto;
 `;
 
-const StyledSpan = styled.span`
-  margin: 1.5rem 2rem;
+const StyledListDiv = styled.div`
+  margin: 0.3em;
   padding: 0.8em;
   border-radius: 10px;
   background-color: #bfeaf5;
