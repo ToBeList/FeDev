@@ -105,6 +105,7 @@ export default function Goal() {
           // console.log(e);
         });
     };
+    
     getPost();
   }, []);
 

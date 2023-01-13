@@ -14,6 +14,7 @@ const useToken = () => {
   }, []);
 
   const Tokens = ['Bearer' + " " + aToken];
+  // const fullToken = Tokens.join();
 
   return { Tokens };
 };
